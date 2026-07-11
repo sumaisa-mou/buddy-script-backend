@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public auth endpoints — creating a session/logging in.
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:6,1');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
 
 // Protected endpoints — require a valid Sanctum session cookie.
 Route::middleware('auth:sanctum')->group(function () {
