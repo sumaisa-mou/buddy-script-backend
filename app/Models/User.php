@@ -19,6 +19,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     // Full name derived from first_name + last_name (no `name` column).
     protected function name(): Attribute
     {

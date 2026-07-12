@@ -30,6 +30,12 @@ class Post extends Model
     {
         return $this->morphMany(Attachment::class, 'attachable');
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {
         return $query->where(function (Builder $q) use ($user) {
