@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +23,6 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'user']);
+    Route::post('/post', [PostController::class, 'store']);
+    Route::get('/posts', [PostController::class, 'index']);
 });
