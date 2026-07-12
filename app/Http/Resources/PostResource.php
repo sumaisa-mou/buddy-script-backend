@@ -21,6 +21,7 @@ class PostResource extends JsonResource
             'likes_count' => (int) $this->likes_count,
             'liked_by_me' => (bool) $this->liked_by_me,
             'comments_count' => (int)$this->comments_count,
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }

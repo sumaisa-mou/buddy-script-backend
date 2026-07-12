@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/posts', [PostController::class, 'index']);
     Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
     Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+    Route::get('/comments/{comment}/replies', [CommentController::class, 'replies']);
 
     // Post likes
     Route::post('/posts/{post}/likes', [PostLikeController::class, 'store']);
