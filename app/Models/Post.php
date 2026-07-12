@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -36,11 +37,27 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(PostLike::class);
+    }
+
+    public function likers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_likes');
+    }
+
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {
         return $query->where(function (Builder $q) use ($user) {
             $q->where('visibility', self::VISIBILITY_PUBLIC)
               ->orWhere('user_id', $user->id);
         });
+    }
+
+    // Reusable visibility check: public post, or the viewer's own.
+    public function isVisibleTo(User $user): bool
+    {
+        return $this->visibility === self::VISIBILITY_PUBLIC || $this->user_id === $user->id;
     }
 }

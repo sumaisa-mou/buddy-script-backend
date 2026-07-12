@@ -19,7 +19,8 @@ class CommentResource extends JsonResource
             ],
             'replies_count' => $this->whenCounted('replies'),
             'replies'       => CommentResource::collection($this->whenLoaded('replies')),
-            // likes go here later: 'likes_count', 'liked_by_me'
+            'likes_count'   => $this->whenCounted('likes'),
+            'liked_by_me'   => (bool) $this->liked_by_me,
         ];
     }
 }

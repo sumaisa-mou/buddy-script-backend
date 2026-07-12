@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
+use App\Models\CommentLike;
 use App\Models\Post;
 
 class CommentController extends Controller
@@ -12,12 +13,20 @@ class CommentController extends Controller
     {
         $this->authorizeView($post);
 
+        $userId = auth()->id();
+        $likedByMe = fn ($q) => $q->addSelect(['liked_by_me' => CommentLike::query()
+            ->selectRaw('1')->whereColumn('comment_id', 'comments.id')
+            ->where('user_id', $userId)->limit(1)]);
+
         $comments = $post->comments()
             ->whereNull('parent_id')                       // top-level only
             ->with('user:id,first_name,last_name')
-            ->withCount('replies')
+            ->withCount(['replies', 'likes'])
+            ->tap($likedByMe)
             ->with(['replies' => fn ($q) => $q
                 ->with('user:id,first_name,last_name')
+                ->withCount('likes')
+                ->tap($likedByMe)
                 ->oldest()])                               // replies chronological
             ->latest()->latest('id')
             ->cursorPaginate(10);

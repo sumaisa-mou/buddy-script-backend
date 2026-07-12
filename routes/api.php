@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentLikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/posts', [PostController::class, 'index']);
     Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
     Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+
+    // Post likes
+    Route::post('/posts/{post}/likes', [PostLikeController::class, 'store']);
+    Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy']);
+    Route::get('/posts/{post}/likes', [PostLikeController::class, 'index']);
+
+    // Comment / reply likes
+    Route::post('/comments/{comment}/likes', [CommentLikeController::class, 'store']);
+    Route::delete('/comments/{comment}/likes', [CommentLikeController::class, 'destroy']);
+    Route::get('/comments/{comment}/likes', [CommentLikeController::class, 'index']);
 });

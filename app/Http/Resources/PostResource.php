@@ -18,9 +18,9 @@ class PostResource extends JsonResource
                 'name' => $this->user->name,
             ],
             'images' => $this->attachments->pluck('url'),
-//            'likes_count' => (int)$this->likes_count,
-//            'comments_count' => (int)$this->comments_count,
-//            'liked_by_me' => (bool)$this->liked_by_me,
+            'likes_count' => (int) $this->likes_count,
+            'liked_by_me' => (bool) $this->liked_by_me,
+            'comments_count' => (int)$this->comments_count,
         ];
     }
 }
